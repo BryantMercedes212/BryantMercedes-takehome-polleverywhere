@@ -16,9 +16,9 @@ app.get("/", (request, response) => {
   response.status(200).send("Hello World");
 });
 
-// Products ROUTES
-// const entriesController = require("./controllers/raffleControllers");
-// app.use("/entries", entriesController);
+// Raffle ROUTES
+const raffleController = require("./controllers/raffleControllers");
+app.use("/raffle", raffleController);
 
 app.get("*", (request, response) => {
   response.status(404).send("Page not found");
