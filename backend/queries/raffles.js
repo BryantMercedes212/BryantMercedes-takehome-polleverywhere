@@ -31,14 +31,27 @@ const getRaffleById = async (id) => {
   }
 };
 
-const createNewParticipant = async (participant) => {
+const createNewParticipant = async (id, participant) => {
+  console.log("in raffle post query");
   try {
-    let { firstName, lastName, email, phone, id } = participant;
+    let { firstName, lastName, email, phone } = participant;
     const newParticipant = await db.one(
-      "INSERT INTO participant (firstName, lastName, email, phone, raffle_id) VALUES ($1, $2, 3$, 4$, 5$) RETURNING * ",
-      [firstName, lastName, email, phone, id]
+      "INSERT INTO participant (firstName, lastName, email, phone, raffle_id) VALUES ($1, $2, $3, $4, $5) RETURNING * ",
+      [firstName, lastName, email, phone, Number(id)]
     );
     return newParticipant;
+  } catch (error) {
+    return error;
+  }
+};
+
+const getAllParticipants = async (id) => {
+  try {
+    const allParticipants = await db.any(
+      "SELECT * FROM participant WHERE raffle_id=$1",
+      id
+    );
+    return allParticipants;
   } catch (error) {
     return error;
   }
@@ -61,5 +74,6 @@ module.exports = {
   createOne,
   getRaffleById,
   createNewParticipant,
+  getAllParticipants,
   getAllWinner,
 };

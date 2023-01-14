@@ -1,0 +1,10 @@
+.raffleStylingContainer {
+  border: 1px solid black;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+.raffleStylingInfo {
+  padding: 10px;
+  line-height: 27px;
+}

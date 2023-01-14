@@ -1,0 +1,21 @@
+.navBarContainer {
+  background-color: aquamarine;
+  display: flex;
+  justify-content: center;
+  height: 40px;
+}
+
+.navBar {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+.navBarItems {
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  width: 30%;
+}

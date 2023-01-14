@@ -5,6 +5,7 @@ const {
   createOne,
   getRaffleById,
   createNewParticipant,
+  getAllParticipants,
   addWinner,
   getAllWinner,
 } = require("../queries/raffles");
@@ -33,9 +34,19 @@ raffle.get("/:id", async (request, response) => {
 
   response.status(200).json(oneRaffle);
 });
-
 raffle.post("/:id/participants", async (request, response) => {
-  const participant = await createNewParticipant(request.body.participant);
+  console.log("in raffle post");
+  const { id } = request.params;
+  console.log(request.body.participant);
+  const participant = await createNewParticipant(id, request.body.participant);
+  console.log(participant);
+
+  response.status(200).json(participant);
+});
+
+raffle.get("/:id/participants", async (request, response) => {
+  const { id } = request.params;
+  const participant = await getAllParticipants(id);
 
   response.status(200).json(participant);
 });
