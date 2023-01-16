@@ -10,7 +10,7 @@ function input(label, name, value, handleChange, error) {
         variant="standard"
         margin="normal"
         label={label}
-        inputProps={{ style: { fontSize: 20 } }}
+        inputProps={{ style: { fontSize: 22 } }}
         InputLabelProps={{
           style: { fontSize: 22 },
         }}

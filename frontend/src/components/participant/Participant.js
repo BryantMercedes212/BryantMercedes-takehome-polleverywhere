@@ -3,7 +3,6 @@ import "./Participant.css";
 import axios from "axios";
 
 function Participant({ participant, deleteParticipant, setDeleteParticipant }) {
-  console.log(participant);
   const deleteAParticipant = async () => {
     try {
       axios.post(`http://localhost:3333/raffle/delete/participant`, {

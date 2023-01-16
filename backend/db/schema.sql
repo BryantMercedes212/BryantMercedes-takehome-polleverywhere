@@ -9,8 +9,8 @@ CREATE TABLE raffle (
  id SERIAL PRIMARY KEY,
  name TEXT NOT NULL,
  secret_key TEXT NOT NULL,
- created TEXT NOT NULL,
- raffled TEXT DEFAULT ''
+ created TIMESTAMP NOT NULL,
+ raffled TIMESTAMP 
 );
 
 DROP TABLE IF EXISTS participant;

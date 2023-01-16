@@ -1,7 +1,7 @@
 \c raffles;
 
 INSERT INTO raffle (name, secret_key, created)
-VALUES ('first raffle', '123', 'Sun Jan 15 2023 16:23:27 GMT-0500 (Eastern Standard Time)'),('second raffle', '123', 'Sun Jan 15 2023 16:23:27 GMT-0500 (Eastern Standard Time)' ), ('third raffle', '123', 'Sun Jan 15 2023 16:23:27 GMT-0500 (Eastern Standard Time)');
+VALUES ('first raffle', '123', '2022-11-14T14:14:45.364Z'),('second raffle', '123', '2022-11-14T14:14:45.364Z' ), ('third raffle', '123', '2022-11-14T14:14:45.364Z');
 
 INSERT INTO participant (
     firstName ,

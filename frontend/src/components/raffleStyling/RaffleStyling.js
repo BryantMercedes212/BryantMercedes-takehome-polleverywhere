@@ -3,11 +3,27 @@ import "./RaffleStyling.css";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { format, parseISO } from "date-fns";
 
 function Raffle({ raffle }) {
+  let formattedDateStarted = format(
+    parseISO(raffle.created),
+    "MM/dd/yyyy hh:mm aaaaa'm'"
+  );
+
+  let formattedDateRaffled = "";
+
+  if (raffle.raffled !== null) {
+    formattedDateRaffled = format(
+      parseISO(raffle.raffled),
+      "MM/dd/yyyy hh:mm aaaaa'm'"
+    );
+  }
+
+  console.log(raffle.raffled);
+
   const navigate = useNavigate();
   const [winners, setWinners] = useState([]);
-  console.log(raffle);
 
   const fetchWinners = async () => {
     try {
@@ -34,7 +50,7 @@ function Raffle({ raffle }) {
         <div className="raffleOwner">
           {raffle.name[0].toUpperCase() + raffle.name.slice(1)}'s Raffle{" "}
         </div>
-        <div>Created on: {raffle.created.slice(0, 25)}</div>
+        <div>Created on: {formattedDateStarted}</div>
         <div>
           Winner:{" "}
           {winners.length > 0
@@ -43,7 +59,12 @@ function Raffle({ raffle }) {
               })
             : "No Winners Yet"}
         </div>
-        <div>Raffled on: loll</div>
+        <div>
+          {" "}
+          {raffle.raffled === null
+            ? "Not Yet Raffled"
+            : `Raffled on: ${formattedDateRaffled}`}
+        </div>
       </div>
     </div>
   );

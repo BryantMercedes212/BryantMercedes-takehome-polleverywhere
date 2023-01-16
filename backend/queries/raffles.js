@@ -60,7 +60,7 @@ const getAllParticipants = async (id) => {
 const updateParticipants = async (id) => {
   try {
     const updatedParticipant = await db.one(
-      "Delete From participant  WHERE id=$1",
+      "UPDATE participant SET win='yes' WHERE id=$1",
       id
     );
     return updatedParticipant;
@@ -71,11 +71,11 @@ const updateParticipants = async (id) => {
 
 const deleteParticipant = async (id) => {
   try {
-    const updatedParticipant = await db.one(
-      "UPDATE participant SET win='yes' WHERE id=$1",
+    const deletedParticipant = await db.one(
+      " Delete From participant WHERE id=$1",
       id
     );
-    return updatedParticipant;
+    return deletedParticipant;
   } catch (error) {
     return error;
   }
@@ -106,6 +106,20 @@ const addWinner = async (participant) => {
   }
 };
 
+const updateRaffle = async (id) => {
+  console.log("udate queery");
+  const date = new Date(Date.now());
+  try {
+    const updatedParticipant = await db.one(
+      "UPDATE raffle SET raffled=$1 WHERE id=$2",
+      [date, id]
+    );
+    return updatedParticipant;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   getAllRaffles,
   createOne,
@@ -116,4 +130,5 @@ module.exports = {
   addWinner,
   updateParticipants,
   deleteParticipant,
+  updateRaffle,
 };

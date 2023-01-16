@@ -3,6 +3,7 @@ import input from "../input/input";
 import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import axios from "axios";
+import "./AddNewParticipant.css";
 
 function AddNewParticipant({ id, setAddNew, addNew }) {
   const [newParticipant, setNewParticipant] = useState({
@@ -51,8 +52,8 @@ function AddNewParticipant({ id, setAddNew, addNew }) {
   };
 
   return (
-    <div className="newEntryContainer">
-      <div className="addNewEntryTitle"> Adding a New Entry</div>
+    <div className="newRaffleContainer">
+      <div className="addNewRaffleTitle"> Adding a New Entry</div>
       <div className="allInputs">
         {input(
           "First Name",
@@ -75,6 +76,7 @@ function AddNewParticipant({ id, setAddNew, addNew }) {
         <Button
           sx={{
             height: 50,
+            width: 150,
           }}
           variant="contained"
           size="large"
