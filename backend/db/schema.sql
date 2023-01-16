@@ -8,7 +8,9 @@ DROP TABLE IF EXISTS raffle;
 CREATE TABLE raffle (
  id SERIAL PRIMARY KEY,
  name TEXT NOT NULL,
- secret_key TEXT NOT NULL
+ secret_key TEXT NOT NULL,
+ created TEXT NOT NULL,
+ raffled TEXT DEFAULT ''
 );
 
 DROP TABLE IF EXISTS participant;
@@ -19,6 +21,7 @@ CREATE TABLE participant (
     lastName TEXT NOT NULL,
     email TEXT NOT NULL,
     phone TEXT NOT NULL,
+    win TEXT DEFAULT 'no',
     raffle_id INTEGER NOT NULL,
     FOREIGN KEY (raffle_id) REFERENCES raffle(id)
 );

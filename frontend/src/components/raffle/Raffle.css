@@ -1,6 +1,31 @@
-.participantsContainer {
-  background-color: blue;
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: aqua;
 }
-.addNewParticipant {
-  /* position: absolute; */
+
+.raffleHeader {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.raffleButtons {
+  margin-left: 150px;
+
+  width: 20%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}
+.raffleParticipants {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 70%;
 }

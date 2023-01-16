@@ -8,6 +8,8 @@ const {
   getAllParticipants,
   addWinner,
   getAllWinner,
+  updateParticipants,
+  deleteParticipant,
 } = require("../queries/raffles");
 
 // Configuration
@@ -51,18 +53,27 @@ raffle.get("/:id/participants", async (request, response) => {
   response.status(200).json(participant);
 });
 
-// raffle.post("/:id/winner", async (request, response) => {
-//   const { id } = request.params;
-//   const winner = await addWinner(id, request.body.participant);
+raffle.post("/winner", async (request, response) => {
+  const winner = await addWinner(request.body.winner);
+  response.status(200).json(winner);
+});
 
-//   response.status(200).json(winner);
-// });
+raffle.post("/update/winner", async (request, response) => {
+  const winner = await updateParticipants(request.body.id);
+  response.status(200).json(winner);
+});
 
 raffle.get("/:id/winner", async (request, response) => {
   const { id } = request.params;
   const winners = await getAllWinner(id);
-
   response.status(200).json(winners);
+});
+
+raffle.post("/delete/participant", async (request, response) => {
+  console.log("controller call");
+  const winner = await deleteParticipant(request.body.id);
+  response.status(200).json(winner);
+  console.log(winner);
 });
 
 module.exports = raffle;

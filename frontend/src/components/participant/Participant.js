@@ -1,11 +1,28 @@
 import React from "react";
 import "./Participant.css";
-function Participant({ participant }) {
+import axios from "axios";
+
+function Participant({ participant, deleteParticipant, setDeleteParticipant }) {
+  console.log(participant);
+  const deleteAParticipant = async () => {
+    try {
+      axios.post(`http://localhost:3333/raffle/delete/participant`, {
+        id: participant.id,
+      });
+      setDeleteParticipant(!deleteParticipant);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <div className="participantContainer">
+    <div key={participant.id} className="participantContainer">
       <div className="participant">
-        <div>
+        <di className="participantInfo">
           {participant.firstname} {participant.lastname}
+        </di>
+        <div className="delete" onClick={deleteAParticipant}>
+          {" "}
+          x
         </div>
       </div>
     </div>
