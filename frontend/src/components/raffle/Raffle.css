@@ -1,6 +1,41 @@
-.participantsContainer {
-  background-color: blue;
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-.addNewParticipant {
-  /* position: absolute; */
+
+.raffleHeader {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.raffleButtons {
+  margin-left: 150px;
+  width: 25%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}
+.raffleParticipants {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 70%;
+}
+
+.winnersContainer {
+  border: 2px solid black;
+  border-radius: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+  background-color: rgb(245, 241, 241);
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
 }

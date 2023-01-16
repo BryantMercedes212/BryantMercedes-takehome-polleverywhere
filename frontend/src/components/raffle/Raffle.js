@@ -1,23 +1,34 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import shuffle from "lodash/shuffle";
+import Confetti from "react-confetti";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import AddNewParticipant from "../addNewParticipant/AddNewParticipant";
 import Participant from "../participant/Participant";
-import input from "../input/input";
 import "./Raffle.css";
 import { Button } from "@mui/material";
+import PasswordModal from "../passwordModal/PasswordModal";
+import { styled } from "@mui/material/styles";
+import Winners from "../winners/Winners";
 
 function Raffle() {
   const { id } = useParams();
   const [raffle, setRaffle] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [addNew, setAddNew] = useState(false);
-  const [newParticipant, setNewParticipant] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    raffle_id: Number(id),
-  });
+  const [initialLoad, setInitialLoad] = useState(false);
+  const [windowHeight, setWindowHeight] = useState(null);
+  const [windowWidth, setWindowWidth] = useState(null);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [wraffling, setWraffling] = useState(false);
+  const [allWinners, setAllWinners] = useState([]);
+  const confettiWrapper = useRef(null);
+  const [deleteParticipant, setDeleteParticipant] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const fetchRaffle = async () => {
     try {
@@ -41,116 +52,197 @@ function Raffle() {
     }
   };
 
+  const fetchWinners = async () => {
+    try {
+      const res = await axios.get(`http://localhost:3333/raffle/${id}/winner`);
+      setAllWinners(res.data);
+    } catch (error) {
+      console.log(error);
+      setAllWinners([]);
+    }
+  };
+
+  const updateParticipant = async () => {
+    try {
+      axios.post(`http://localhost:3333/raffle/update/winner`, {
+        id: participants[0].id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const postWinner = async () => {
+    try {
+      axios.post(`http://localhost:3333/raffle/winner`, {
+        winner: participants[0],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateRaffle = async () => {
+    try {
+      axios.post(`http://localhost:3333/raffle/${id}/update`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  function startRaffle() {
+    if (participants.length <= 1) {
+      setWraffling(true);
+      setShowConfetti(true);
+      postWinner();
+      updateParticipant();
+      return;
+    }
+    const randomIndex = Math.floor(Math.random() * participants.length);
+    const filterOutNames = participants.filter(
+      (participant) =>
+        participant.firstname !== participants[randomIndex].firstname
+    );
+    setParticipants(filterOutNames);
+    setInitialLoad(true);
+  }
+
   useEffect(() => {
     fetchRaffle();
     fetchParticipants();
+    fetchWinners();
   }, []);
 
   useEffect(() => {
     fetchParticipants();
-  }, [addNew]);
+  }, [addNew, deleteParticipant]);
 
-  const handleInputChange = (evt) => {
-    const value = evt.target.value;
-    const name = evt.target.name;
+  function restartRaffle() {
+    setInitialLoad(false);
+    fetchParticipants();
+    setWraffling(false);
+    setShowConfetti(false);
+    fetchWinners();
+  }
 
-    setNewParticipant({
-      ...newParticipant,
-      [name]: value,
-    });
-  };
+  useEffect(() => {
+    if (initialLoad) {
+      const filteringTimer = setTimeout(() => {
+        startRaffle();
+      }, 700);
+      return () => {
+        clearTimeout(filteringTimer);
+      };
+    }
+  }, [initialLoad, participants, startRaffle]);
 
-  const createNewEntry = async () => {
-    const { firstName, lastName, email } = newParticipant;
+  useEffect(() => {
+    setWindowHeight(confettiWrapper.current.clientHeight);
+    setWindowWidth(confettiWrapper.current.clientWidth);
+  }, []);
 
-    //making sure that all the information thats needed to create a new entry is filled in
-    if (firstName === "" || lastName === "" || email === "") {
-      alert(
-        "All required fields must filled in before trying to create a new Entry "
-      );
+  const checkPassword = () => {
+    if (password !== raffle.secret_key) {
+      alert("Incorrect Password");
     } else {
-      axios
-        .post(`http://localhost:3333/raffle/${id}/participants`, {
-          participant: newParticipant,
-        })
-        .then(() => {
-          setNewParticipant({
-            firstName: "",
-            lastName: "",
-            email: "",
-            phone: "",
-            raffle_id: Number(id),
-          });
-
-          setAddNew(false);
-        });
+      handleClose();
+      startRaffle();
+      updateRaffle();
     }
   };
 
-  console.log(raffle, participants);
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: "rgb(241, 250, 238)",
+    backgroundColor: "rgb(69, 123, 157)",
+    "&:hover": {
+      backgroundColor: "rgb(29, 53, 87)",
+    },
+  }));
+
+  console.log(allWinners);
 
   return addNew ? (
-    <div className="newEntryContainer">
-      <div className="addNewEntryTitle"> Adding a New Entry</div>
-      <div className="allInputs">
-        {input(
-          "First Name",
-          "firstName",
-          newParticipant.firstName,
-          handleInputChange
-        )}
-        {input(
-          "Last Name",
-          "lastName",
-          newParticipant.lastName,
-          handleInputChange
-        )}
-        {input("Email", "email", newParticipant.email, handleInputChange)}
-        {input("Phone", "phone", newParticipant.phone, handleInputChange)}
-      </div>
-
-      <div className="buttons">
-        {" "}
-        <Button
-          sx={{
-            height: 50,
-          }}
-          variant="contained"
-          size="large"
-          color="error"
-          onClick={() => setAddNew(!addNew)}
-        >
-          Exit
-        </Button>{" "}
-        <Button
-          sx={{
-            height: 50,
-          }}
-          variant="contained"
-          size="large"
-          onClick={createNewEntry}
-        >
-          Add New Participant
-        </Button>
-      </div>
-    </div>
+    <AddNewParticipant setAddNew={setAddNew} addNew={addNew} />
   ) : (
-    <div className="raffleContainer">
-      <h1> {raffle.name}'s Raffle</h1>
-      <div className="allParticipants">
+    <div className="container" ref={confettiWrapper}>
+      <h1>
         {" "}
-        <div className="participantsContainer">
-          <div className="addNewParticipant">
-            <button onClick={() => setAddNew(!addNew)}>
-              {" "}
-              Add a new Participant
-            </button>{" "}
-          </div>
+        {raffle.name ? raffle.name[0].toUpperCase() + raffle.name.slice(1) : ""}
+        's Raffle
+      </h1>
 
-          {participants.map((participant) => {
-            return <Participant participant={participant} />;
-          })}
+      <PasswordModal
+        open={open}
+        handleClose={handleClose}
+        password={password}
+        setPassword={setPassword}
+        checkPassword={checkPassword}
+      />
+
+      <div className="raffleHeader">
+        <div></div>
+        <div className="raffleButtons">
+          {" "}
+          <ColorButton variant="contained" onClick={handleOpen}>
+            Start Raffle
+          </ColorButton>
+          <ColorButton
+            variant="contained"
+            onClick={() => setParticipants(shuffle(participants))}
+          >
+            Shuffle Participants
+          </ColorButton>
         </div>
+
+        <div>
+          <ColorButton variant="contained" onClick={() => setAddNew(!addNew)}>
+            Add a new Participant
+          </ColorButton>
+        </div>
+      </div>
+
+      {allWinners.length === 1 ? <h1> Winner</h1> : <h1>All Winners</h1>}
+      {allWinners.length >= 1 ? (
+        <div className="winnersContainer">
+          {allWinners.map((winner) => (
+            <Winners winner={winner} />
+          ))}
+        </div>
+      ) : (
+        ""
+      )}
+      <div className="raffleParticipants">
+        {participants.map((participant, i) => {
+          return (
+            <Participant
+              participant={participant}
+              deleteParticipant={deleteParticipant}
+              setDeleteParticipant={setDeleteParticipant}
+            />
+          );
+        })}
+      </div>
+      {wraffling && (
+        <Confetti
+          recycle={showConfetti}
+          numberOfPieces={80}
+          width={windowWidth}
+          height={1000}
+        />
+      )}
+
+      <div>
+        {showConfetti && (
+          <div className="raffle-ends">
+            <h3>
+              Congratulations {participants[0].firstname}! You have won the
+              raffle!
+            </h3>
+            <button className="button-outline" onClick={restartRaffle}>
+              Replay
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

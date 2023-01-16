@@ -1,8 +1,9 @@
 .navBarContainer {
-  background-color: aquamarine;
+  background-color: rgb(29, 53, 87);
   display: flex;
   justify-content: center;
-  height: 40px;
+  height: 55px;
+  border-bottom: 2px dashed black;
 }
 
 .navBar {
@@ -18,4 +19,20 @@
   display: flex;
   flex-direction: row;
   width: 30%;
+}
+.logo {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+a {
+  font-size: 24px;
+  text-decoration: none;
+  color: rgb(245, 241, 241);
+  font-weight: 500;
+}
+
+a:hover {
+  text-shadow: 1px 1px rgb(245, 241, 241);
+  border-bottom: 3px solid rgb(245, 241, 241);
 }
