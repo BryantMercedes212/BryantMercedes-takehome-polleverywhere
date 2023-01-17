@@ -4,7 +4,7 @@ import axios from "axios";
 import RaffleStyling from "../raffleStyling/RaffleStyling";
 import "./Home.css";
 
-function Home() {
+function Home({ ToastContainer }) {
   const URL = process.env.REACT_APP_API_URL;
   const [allRaffles, setAllRaffles] = useState([]);
 
@@ -24,7 +24,7 @@ function Home() {
 
   return (
     <div className="allRafflesContainer">
-      {/* <Roulette /> */}
+      <ToastContainer />
       <div className="allRaffles">
         <div className="raffleTitle"> All Raffles:</div>
         <div className="raffles">

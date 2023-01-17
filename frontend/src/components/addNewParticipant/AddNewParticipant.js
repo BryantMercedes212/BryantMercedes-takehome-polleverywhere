@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import "./AddNewParticipant.css";
 
-function AddNewParticipant({ id, setAddNew, addNew }) {
+function AddNewParticipant({ id, setAddNew, addNew, notify }) {
   const [newParticipant, setNewParticipant] = useState({
     firstName: "",
     lastName: "",
@@ -45,7 +45,7 @@ function AddNewParticipant({ id, setAddNew, addNew }) {
             phone: "",
             raffle_id: Number(id),
           });
-
+          notify();
           setAddNew(false);
         });
     }
