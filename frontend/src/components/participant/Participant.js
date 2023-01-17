@@ -14,7 +14,12 @@ function Participant({ participant, deleteParticipant, setDeleteParticipant }) {
     }
   };
   return (
-    <div key={participant.id} className="participantContainer">
+    <div
+      key={participant.id}
+      className={`${
+        participant.lost ? "hiddenParticipant" : "activeParticipant"
+      } participantContainer`}
+    >
       <div className="participant">
         <di className="participantInfo">
           {participant.firstname} {participant.lastname}

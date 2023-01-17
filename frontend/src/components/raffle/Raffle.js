@@ -29,6 +29,8 @@ function Raffle() {
   const [openModal, setOpenModal] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [arrayOfNumbers, setArrayOfNumbers] = useState({});
+  const [winner, setWinner] = useState({});
 
   const fetchRaffle = async () => {
     try {
@@ -45,7 +47,16 @@ function Raffle() {
       const res = await axios.get(
         `http://localhost:3333/raffle/${id}/participants`
       );
-      setParticipants(res.data);
+      const editedParticipant = res.data.map((participant) => {
+        participant.lost = false;
+        return participant;
+      });
+      setParticipants(editedParticipant);
+      const indexes = {};
+      for (let i = 0; i < editedParticipant.length; i++) {
+        indexes[i] = false;
+      }
+      setArrayOfNumbers(indexes);
     } catch (error) {
       console.log(error);
       setParticipants([]);
@@ -91,21 +102,46 @@ function Raffle() {
   };
 
   function startRaffle() {
-    if (participants.length <= 1) {
+    if (
+      participants.filter((participant) => participant.lost === false).length <=
+      1
+    ) {
+      setWinner(
+        participants.filter((participant) => participant.lost === false)
+      );
+
       setWraffling(true);
       setShowConfetti(true);
       postWinner();
       updateParticipant();
       return;
     }
-    const randomIndex = Math.floor(Math.random() * participants.length);
-    const filterOutNames = participants.filter(
-      (participant) =>
-        participant.firstname !== participants[randomIndex].firstname
-    );
-    setParticipants(filterOutNames);
+    const arr = [];
+    for (let key in arrayOfNumbers) {
+      if (arrayOfNumbers[key] === false) {
+        arr.push(key);
+      }
+    }
+
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    arrayOfNumbers[arr[randomIndex]] = true;
+
+    console.log(arr);
+    // const filterOutNames = participants.filter(
+    //   (participant) => participant.lost === true
+    // );
+    // setParticipants(filterOutNames);
+    const temporaryParticipant = [...participants];
+    temporaryParticipant[arr[randomIndex]].lost = true;
+    console.log("deleted", randomIndex);
+    // const tempArray = [...arrayOfNumbers];
+    // tempArray.splice(randomIndex, 1);
+
+    setParticipants(temporaryParticipant);
+    // setArrayOfNumbers(tempArray);
     setInitialLoad(true);
   }
+  console.log(arrayOfNumbers);
 
   useEffect(() => {
     fetchRaffle();
@@ -159,8 +195,6 @@ function Raffle() {
     },
   }));
 
-  console.log(allWinners);
-
   return addNew ? (
     <AddNewParticipant setAddNew={setAddNew} addNew={addNew} />
   ) : (
@@ -201,12 +235,14 @@ function Raffle() {
         </div>
       </div>
 
-      {allWinners.length === 1 ? <h1> Winner</h1> : <h1>All Winners</h1>}
       {allWinners.length >= 1 ? (
-        <div className="winnersContainer">
-          {allWinners.map((winner) => (
-            <Winners winner={winner} />
-          ))}
+        <div className="winnerInfo">
+          <h1> Winners</h1>
+          <div className="winnersContainer">
+            {allWinners.map((winner) => (
+              <Winners winner={winner} />
+            ))}
+          </div>
         </div>
       ) : (
         ""
@@ -218,6 +254,7 @@ function Raffle() {
               participant={participant}
               deleteParticipant={deleteParticipant}
               setDeleteParticipant={setDeleteParticipant}
+              lost={false}
             />
           );
         })}
@@ -235,8 +272,7 @@ function Raffle() {
         {showConfetti && (
           <div className="raffle-ends">
             <h3>
-              Congratulations {participants[0].firstname}! You have won the
-              raffle!
+              Congratulations {winner[0].firstname}! You have won the raffle!
             </h3>
             <button className="button-outline" onClick={restartRaffle}>
               Replay
