@@ -20,8 +20,6 @@ function Raffle({ raffle }) {
     );
   }
 
-  console.log(raffle.raffled);
-
   const navigate = useNavigate();
   const [winners, setWinners] = useState([]);
 

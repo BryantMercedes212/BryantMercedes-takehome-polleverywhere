@@ -28,7 +28,7 @@ function AddNewRaffle({ setAddNew, addNew }) {
     //making sure that all the information thats needed to create a new entry is filled in
     if (name === "" || secret_key === "") {
       alert(
-        "All required fields must filled in before trying to create a new Entry "
+        "All required fields must filled in before trying to create a new raffle "
       );
     } else {
       axios

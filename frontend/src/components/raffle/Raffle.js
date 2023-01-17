@@ -29,7 +29,7 @@ function Raffle() {
   const [openModal, setOpenModal] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [arrayOfNumbers, setArrayOfNumbers] = useState({});
+  const [objectOfNumbers, setObjectOfNumbers] = useState({});
   const [winner, setWinner] = useState({});
 
   const fetchRaffle = async () => {
@@ -56,7 +56,7 @@ function Raffle() {
       for (let i = 0; i < editedParticipant.length; i++) {
         indexes[i] = false;
       }
-      setArrayOfNumbers(indexes);
+      setObjectOfNumbers(indexes);
     } catch (error) {
       console.log(error);
       setParticipants([]);
@@ -116,32 +116,20 @@ function Raffle() {
       updateParticipant();
       return;
     }
-    const arr = [];
-    for (let key in arrayOfNumbers) {
-      if (arrayOfNumbers[key] === false) {
-        arr.push(key);
+    const usableNumbers = [];
+    for (let key in objectOfNumbers) {
+      if (objectOfNumbers[key] === false) {
+        usableNumbers.push(key);
       }
     }
 
-    const randomIndex = Math.floor(Math.random() * arr.length);
-    arrayOfNumbers[arr[randomIndex]] = true;
-
-    console.log(arr);
-    // const filterOutNames = participants.filter(
-    //   (participant) => participant.lost === true
-    // );
-    // setParticipants(filterOutNames);
+    const randomIndex = Math.floor(Math.random() * usableNumbers.length);
+    objectOfNumbers[usableNumbers[randomIndex]] = true;
     const temporaryParticipant = [...participants];
-    temporaryParticipant[arr[randomIndex]].lost = true;
-    console.log("deleted", randomIndex);
-    // const tempArray = [...arrayOfNumbers];
-    // tempArray.splice(randomIndex, 1);
-
+    temporaryParticipant[usableNumbers[randomIndex]].lost = true;
     setParticipants(temporaryParticipant);
-    // setArrayOfNumbers(tempArray);
     setInitialLoad(true);
   }
-  console.log(arrayOfNumbers);
 
   useEffect(() => {
     fetchRaffle();
@@ -274,9 +262,10 @@ function Raffle() {
             <h3>
               Congratulations {winner[0].firstname}! You have won the raffle!
             </h3>
-            <button className="button-outline" onClick={restartRaffle}>
-              Replay
-            </button>
+            <Button variant="contained" color="success" onClick={restartRaffle}>
+              {" "}
+              Reply
+            </Button>
           </div>
         )}
       </div>

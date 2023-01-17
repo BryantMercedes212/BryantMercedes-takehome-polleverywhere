@@ -72,10 +72,8 @@ raffle.post("/delete/participant", async (request, response) => {
 });
 
 raffle.post("/:id/update", async (request, response) => {
-  console.log("update raffle");
   const { id } = request.params;
   const updatedRaffle = await updateRaffle(id);
-  console.log(updatedRaffle);
   response.status(200).json(updatedRaffle);
 });
 

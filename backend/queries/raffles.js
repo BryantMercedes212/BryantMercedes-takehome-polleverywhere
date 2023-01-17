@@ -107,7 +107,6 @@ const addWinner = async (participant) => {
 };
 
 const updateRaffle = async (id) => {
-  console.log("udate queery");
   const date = new Date(Date.now());
   try {
     const updatedParticipant = await db.one(

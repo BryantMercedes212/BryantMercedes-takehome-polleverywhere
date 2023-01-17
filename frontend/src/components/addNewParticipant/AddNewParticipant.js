@@ -30,7 +30,7 @@ function AddNewParticipant({ id, setAddNew, addNew }) {
     //making sure that all the information thats needed to create a new entry is filled in
     if (firstName === "" || lastName === "" || email === "") {
       alert(
-        "All required fields must filled in before trying to create a new Entry "
+        "All required fields must filled in before trying to create a new participant "
       );
     } else {
       axios
