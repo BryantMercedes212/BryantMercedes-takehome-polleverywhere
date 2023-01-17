@@ -39,3 +39,9 @@
   align-items: center;
   margin-bottom: 50px;
 }
+
+.winnerInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

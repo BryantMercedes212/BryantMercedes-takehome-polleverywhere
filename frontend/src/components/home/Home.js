@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import RaffleStyling from "../raffleStyling/RaffleStyling";
 import "./Home.css";
+import Roulette from "../roulette/Roulette";
 
 function Home() {
   const URL = process.env.REACT_APP_API_URL;
@@ -24,6 +25,7 @@ function Home() {
 
   return (
     <div className="allRafflesContainer">
+      {/* <Roulette /> */}
       <div className="allRaffles">
         <div className="raffleTitle"> All Raffles:</div>
         <div className="raffles">
