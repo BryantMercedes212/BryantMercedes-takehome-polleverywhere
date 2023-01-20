@@ -26,12 +26,6 @@ VALUES
 ('Eren', 'mr','123@gmail.com', '21334', 1), 
 ('Jerry', 'Castillo','123@gmail.com', '21334', 1), 
 ('Camila', 'mr','123@gmail.com', '21334', 1),
-('Carmen', 'Mercedes','123@gmail.com', '21334', 1),
-('Ramon', 'Mercedes','123@gmail.com', '21334', 1),
-('Bakugo', 'Inoa','123@gmail.com', '21334', 1),
-('ROCK', 'LEE','123@gmail.com', '21334', 1),
-('Kevin', 'Hart','123@gmail.com', '21334', 1),
-('Joel', 'Luna','123@gmail.com', '21334', 1),
 ('Joshua', 'Manly','123@gmail.com', '21334', 1);
 
 

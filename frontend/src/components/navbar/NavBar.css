@@ -1,9 +1,8 @@
 .navBarContainer {
-  background-color: rgb(29, 53, 87);
+  background-color: #1976d2;
   display: flex;
   justify-content: center;
   height: 55px;
-  border-bottom: 2px dashed black;
 }
 
 .navBar {

@@ -4,9 +4,7 @@ import "./Winners.css";
 function Winners({ winner }) {
   return (
     <div key={winner.id} className="winnerContainer">
-      <div className="winner">
-        <di className="winnerInfo">{winner.name}</di>
-      </div>
+      <di className="winner">{winner.name}</di>
     </div>
   );
 }

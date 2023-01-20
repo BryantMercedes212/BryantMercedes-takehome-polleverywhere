@@ -96,7 +96,7 @@ function Raffle() {
 
   const updateRaffle = async () => {
     try {
-      axios.post(`http://localhost:3333/raffle/${id}/update`);
+      axios.put(`http://localhost:3333/raffle/${id}/update`);
     } catch (error) {
       console.log(error);
     }
@@ -151,7 +151,7 @@ function Raffle() {
     if (initialLoad) {
       const filteringTimer = setTimeout(() => {
         startRaffle();
-      }, 1200);
+      }, 1050);
       return () => {
         clearTimeout(filteringTimer);
       };
@@ -175,9 +175,9 @@ function Raffle() {
 
   const ColorButton = styled(Button)(({ theme }) => ({
     color: "rgb(241, 250, 238)",
-    backgroundColor: "rgb(69, 123, 157)",
+    backgroundColor: "#448AFF",
     "&:hover": {
-      backgroundColor: "rgb(29, 53, 87)",
+      backgroundColor: "#2196F3",
     },
   }));
 
@@ -191,30 +191,34 @@ function Raffle() {
   ) : (
     <div className="container" ref={confettiWrapper}>
       <ToastContainer />
-      <h1>
-        {" "}
-        {raffle.name ? raffle.name[0].toUpperCase() + raffle.name.slice(1) : ""}
-        's Raffle
-      </h1>
-      <PasswordModal
-        open={open}
-        handleClose={handleClose}
-        password={password}
-        setPassword={setPassword}
-        checkPassword={checkPassword}
-      />
-      {allWinners.length >= 1 ? (
-        <div className="winnerInfo">
-          <h1> Winners</h1>
-          <div className="winnersContainer">
-            {allWinners.map((winner) => (
-              <Winners winner={winner} />
-            ))}
-          </div>
+      <div className="raffleInformation">
+        <div className="raffleName">
+          {" "}
+          {raffle.name
+            ? raffle.name[0].toUpperCase() + raffle.name.slice(1)
+            : ""}
+          's Raffle
         </div>
-      ) : (
-        ""
-      )}{" "}
+        <PasswordModal
+          open={open}
+          handleClose={handleClose}
+          password={password}
+          setPassword={setPassword}
+          checkPassword={checkPassword}
+        />
+        {allWinners.length >= 1 ? (
+          <div className="winnerInfo">
+            <div className="winnersContainer">
+              {allWinners.length > 1 ? <h1> Winners: </h1> : <h1> Winner: </h1>}{" "}
+              {allWinners.map((winner) => (
+                <Winners winner={winner} />
+              ))}
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
       {participants.length > 0 ? (
         <div className="raffleHeader">
           <div></div>
@@ -264,9 +268,9 @@ function Raffle() {
       {wraffling && (
         <Confetti
           recycle={showConfetti}
-          numberOfPieces={80}
+          numberOfPieces={100}
           width={windowWidth}
-          height={1000}
+          height={windowHeight}
         />
       )}
       {showConfetti && (

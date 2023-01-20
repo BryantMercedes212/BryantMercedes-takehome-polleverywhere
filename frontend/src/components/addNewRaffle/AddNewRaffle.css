@@ -12,9 +12,8 @@
 }
 
 .buttons {
-  margin-top: 130px;
-
+  margin-top: 100px;
   display: flex;
   justify-content: space-between;
-  width: 70%;
+  width: 59%;
 }
