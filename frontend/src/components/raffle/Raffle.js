@@ -275,7 +275,7 @@ function Raffle() {
           recycle={showConfetti}
           numberOfPieces={100}
           width={windowWidth}
-          height={windowHeight}
+          height={1200}
         />
       )}
       {showConfetti && (
