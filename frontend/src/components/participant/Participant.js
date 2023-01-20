@@ -1,6 +1,8 @@
 import React from "react";
 import "./Participant.css";
 import axios from "axios";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function Participant({ participant, deleteParticipant, setDeleteParticipant }) {
   const deleteAParticipant = async () => {
@@ -24,10 +26,13 @@ function Participant({ participant, deleteParticipant, setDeleteParticipant }) {
         <di className="participantInfo">
           {participant.firstname} {participant.lastname}
         </di>
-        <div className="delete" onClick={deleteAParticipant}>
-          {" "}
-          x
-        </div>
+        <IconButton
+          aria-label="delete"
+          size="small"
+          onClick={deleteAParticipant}
+        >
+          <DeleteIcon fontSize="small" />
+        </IconButton>
       </div>
     </div>
   );

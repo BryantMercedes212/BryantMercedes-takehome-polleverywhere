@@ -10,6 +10,8 @@ import { Button } from "@mui/material";
 import PasswordModal from "../passwordModal/PasswordModal";
 import { styled } from "@mui/material/styles";
 import Winners from "../winners/Winners";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Raffle() {
   const { id } = useParams();
@@ -31,6 +33,7 @@ function Raffle() {
   const handleClose = () => setOpen(false);
   const [objectOfNumbers, setObjectOfNumbers] = useState({});
   const [winner, setWinner] = useState({});
+  const notify = () => toast.success("Participant Created!");
 
   const fetchRaffle = async () => {
     try {
@@ -47,13 +50,11 @@ function Raffle() {
       const res = await axios.get(
         `http://localhost:3333/raffle/${id}/participants`
       );
-      const editedParticipant = res.data.map((participant) => {
-        participant.lost = false;
-        return participant;
-      });
-      setParticipants(editedParticipant);
+
+      setParticipants(res.data);
       const indexes = {};
-      for (let i = 0; i < editedParticipant.length; i++) {
+
+      for (let i = 0; i < res.data.length; i++) {
         indexes[i] = false;
       }
       setObjectOfNumbers(indexes);
@@ -76,7 +77,7 @@ function Raffle() {
   const updateParticipant = async () => {
     try {
       axios.post(`http://localhost:3333/raffle/update/winner`, {
-        id: participants[0].id,
+        id: winner.id,
       });
     } catch (error) {
       console.log(error);
@@ -86,7 +87,7 @@ function Raffle() {
   const postWinner = async () => {
     try {
       axios.post(`http://localhost:3333/raffle/winner`, {
-        winner: participants[0],
+        winner: winner,
       });
     } catch (error) {
       console.log(error);
@@ -102,14 +103,11 @@ function Raffle() {
   };
 
   function startRaffle() {
-    if (
-      participants.filter((participant) => participant.lost === false).length <=
-      1
-    ) {
-      setWinner(
-        participants.filter((participant) => participant.lost === false)
-      );
-
+    const participantsWhoHaventLost = participants.filter(
+      (participant) => participant.lost === false
+    );
+    if (participantsWhoHaventLost.length <= 1) {
+      setWinner(participantsWhoHaventLost[0]);
       setWraffling(true);
       setShowConfetti(true);
       postWinner();
@@ -117,9 +115,9 @@ function Raffle() {
       return;
     }
     const usableNumbers = [];
-    for (let key in objectOfNumbers) {
-      if (objectOfNumbers[key] === false) {
-        usableNumbers.push(key);
+    for (let number in objectOfNumbers) {
+      if (objectOfNumbers[number] === false) {
+        usableNumbers.push(number);
       }
     }
 
@@ -153,7 +151,7 @@ function Raffle() {
     if (initialLoad) {
       const filteringTimer = setTimeout(() => {
         startRaffle();
-      }, 700);
+      }, 1200);
       return () => {
         clearTimeout(filteringTimer);
       };
@@ -184,15 +182,20 @@ function Raffle() {
   }));
 
   return addNew ? (
-    <AddNewParticipant setAddNew={setAddNew} addNew={addNew} />
+    <AddNewParticipant
+      id={id}
+      setAddNew={setAddNew}
+      addNew={addNew}
+      notify={notify}
+    />
   ) : (
     <div className="container" ref={confettiWrapper}>
+      <ToastContainer />
       <h1>
         {" "}
         {raffle.name ? raffle.name[0].toUpperCase() + raffle.name.slice(1) : ""}
         's Raffle
       </h1>
-
       <PasswordModal
         open={open}
         handleClose={handleClose}
@@ -200,29 +203,6 @@ function Raffle() {
         setPassword={setPassword}
         checkPassword={checkPassword}
       />
-
-      <div className="raffleHeader">
-        <div></div>
-        <div className="raffleButtons">
-          {" "}
-          <ColorButton variant="contained" onClick={handleOpen}>
-            Start Raffle
-          </ColorButton>
-          <ColorButton
-            variant="contained"
-            onClick={() => setParticipants(shuffle(participants))}
-          >
-            Shuffle Participants
-          </ColorButton>
-        </div>
-
-        <div>
-          <ColorButton variant="contained" onClick={() => setAddNew(!addNew)}>
-            Add a new Participant
-          </ColorButton>
-        </div>
-      </div>
-
       {allWinners.length >= 1 ? (
         <div className="winnerInfo">
           <h1> Winners</h1>
@@ -234,19 +214,53 @@ function Raffle() {
         </div>
       ) : (
         ""
+      )}{" "}
+      {participants.length > 0 ? (
+        <div className="raffleHeader">
+          <div></div>
+          <div className="raffleButtons">
+            {" "}
+            <ColorButton variant="contained" onClick={handleOpen}>
+              Start Raffle
+            </ColorButton>
+            <ColorButton
+              variant="contained"
+              onClick={() => setParticipants(shuffle(participants))}
+            >
+              Shuffle Participants
+            </ColorButton>
+          </div>
+
+          <div>
+            <ColorButton variant="contained" onClick={() => setAddNew(!addNew)}>
+              Add a new Participant
+            </ColorButton>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <ColorButton variant="contained" onClick={() => setAddNew(!addNew)}>
+            Add a new Participant
+          </ColorButton>
+        </div>
+      )}{" "}
+      {participants.length > 0 ? (
+        <div className="raffleParticipantsContainer">
+          <div className="raffleParticipants">
+            {participants.map((participant, i) => {
+              return (
+                <Participant
+                  participant={participant}
+                  deleteParticipant={deleteParticipant}
+                  setDeleteParticipant={setDeleteParticipant}
+                />
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        ""
       )}
-      <div className="raffleParticipants">
-        {participants.map((participant, i) => {
-          return (
-            <Participant
-              participant={participant}
-              deleteParticipant={deleteParticipant}
-              setDeleteParticipant={setDeleteParticipant}
-              lost={false}
-            />
-          );
-        })}
-      </div>
       {wraffling && (
         <Confetti
           recycle={showConfetti}
@@ -255,20 +269,29 @@ function Raffle() {
           height={1000}
         />
       )}
+      {showConfetti && (
+        <div className="raffleEndsContainer">
+          <div className="raffleEnds">
+            <div className="raffleEndsInformation">
+              Congratulations {<span>{winner.firstname}</span>}! You have won
+              the raffle!
+            </div>
 
-      <div>
-        {showConfetti && (
-          <div className="raffle-ends">
-            <h3>
-              Congratulations {winner[0].firstname}! You have won the raffle!
-            </h3>
-            <Button variant="contained" color="success" onClick={restartRaffle}>
+            <Button
+              variant="contained"
+              onClick={restartRaffle}
+              size="large"
+              sx={{
+                height: 50,
+                fontSize: "20px",
+              }}
+            >
               {" "}
               Reply
             </Button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

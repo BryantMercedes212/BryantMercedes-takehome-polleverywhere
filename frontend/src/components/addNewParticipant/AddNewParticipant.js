@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import "./AddNewParticipant.css";
 
-function AddNewParticipant({ id, setAddNew, addNew }) {
+function AddNewParticipant({ id, setAddNew, addNew, notify }) {
   const [newParticipant, setNewParticipant] = useState({
     firstName: "",
     lastName: "",
@@ -38,6 +38,7 @@ function AddNewParticipant({ id, setAddNew, addNew }) {
           participant: newParticipant,
         })
         .then(() => {
+          notify();
           setNewParticipant({
             firstName: "",
             lastName: "",
@@ -45,7 +46,6 @@ function AddNewParticipant({ id, setAddNew, addNew }) {
             phone: "",
             raffle_id: Number(id),
           });
-
           setAddNew(false);
         });
     }
@@ -53,7 +53,7 @@ function AddNewParticipant({ id, setAddNew, addNew }) {
 
   return (
     <div className="newRaffleContainer">
-      <div className="addNewRaffleTitle"> Adding a New Entry</div>
+      <div className="addNewRaffleTitle"> Adding a New Participant</div>
       <div className="allInputs">
         {input(
           "First Name",
@@ -71,7 +71,7 @@ function AddNewParticipant({ id, setAddNew, addNew }) {
         {input("Phone", "phone", newParticipant.phone, handleInputChange)}
       </div>
 
-      <div className="buttons">
+      <div className="participantsButtons">
         {" "}
         <Button
           sx={{

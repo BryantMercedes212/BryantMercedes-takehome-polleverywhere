@@ -22,6 +22,7 @@ CREATE TABLE participant (
     email TEXT NOT NULL,
     phone TEXT NOT NULL,
     win TEXT DEFAULT 'no',
+    lost BOOLEAN DEFAULT false,
     raffle_id INTEGER NOT NULL,
     FOREIGN KEY (raffle_id) REFERENCES raffle(id)
 );

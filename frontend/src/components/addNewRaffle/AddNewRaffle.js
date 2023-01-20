@@ -5,7 +5,7 @@ import axios from "axios";
 import "./AddNewRaffle.css";
 import { useNavigate } from "react-router-dom";
 
-function AddNewRaffle({ setAddNew, addNew }) {
+function AddNewRaffle({ notify }) {
   const navigate = useNavigate();
   const [raffle, setRaffle] = useState({
     name: "",
@@ -40,6 +40,7 @@ function AddNewRaffle({ setAddNew, addNew }) {
             name: "",
             secret_key: "",
           });
+          notify();
           navigate(`/`);
         });
     }
