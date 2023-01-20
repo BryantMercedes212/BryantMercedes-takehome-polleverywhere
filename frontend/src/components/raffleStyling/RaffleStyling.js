@@ -50,7 +50,8 @@ function Raffle({ raffle }) {
         </div>
         <div>Created on: {formattedDateStarted}</div>
         <div>
-          Winner:{" "}
+          {winners.length > 1 ? "Winners: " : "Winner: "}
+
           {winners.length > 0
             ? winners.map((winner) => {
                 return <p>{winner.name}</p>;
