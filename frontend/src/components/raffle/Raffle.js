@@ -167,6 +167,11 @@ function Raffle() {
     if (password !== raffle.secret_key) {
       alert("Incorrect Password");
     } else {
+      window.scroll({
+        top: document.body.offsetHeight,
+        left: 0,
+        behavior: "smooth",
+      });
       handleClose();
       startRaffle();
       updateRaffle();
@@ -281,7 +286,7 @@ function Raffle() {
               the raffle!
             </div>
 
-            <Button
+            <ColorButton
               variant="contained"
               onClick={restartRaffle}
               size="large"
@@ -292,7 +297,7 @@ function Raffle() {
             >
               {" "}
               Reply
-            </Button>
+            </ColorButton>
           </div>
         </div>
       )}
