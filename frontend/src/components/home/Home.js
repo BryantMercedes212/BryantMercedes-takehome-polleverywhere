@@ -24,7 +24,6 @@ function Home({ ToastContainer }) {
 
   return (
     <div className="allRafflesContainer">
-      <ToastContainer />
       <div className="allRaffles">
         <div className="raffleTitle"> All Raffles:</div>
         <div className="raffles">
@@ -33,6 +32,7 @@ function Home({ ToastContainer }) {
           })}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

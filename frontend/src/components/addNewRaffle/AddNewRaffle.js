@@ -4,7 +4,6 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import "./AddNewRaffle.css";
 import { useNavigate } from "react-router-dom";
-import "react-toastify/dist/ReactToastify.css";
 
 function AddNewRaffle({ notify }) {
   const navigate = useNavigate();

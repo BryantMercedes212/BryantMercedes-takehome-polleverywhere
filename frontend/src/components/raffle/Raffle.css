@@ -16,16 +16,27 @@
   width: 25%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 60px;
+  margin-bottom: 30px;
+}
+
+.raffleParticipantsContainer {
+  background-color: rgb(245, 241, 241);
+  display: flex;
+  justify-content: center;
+  width: 70%;
+  border: 2px solid black;
+  border-radius: 20px;
+  margin-bottom: 50px;
 }
 .raffleParticipants {
+  margin-top: 30px;
   display: flex;
   justify-content: center;
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
   flex-direction: row;
-  width: 70%;
+  width: 100%;
 }
 
 .winnersContainer {
@@ -37,11 +48,46 @@
   background-color: rgb(245, 241, 241);
   justify-content: center;
   align-items: center;
-  margin-bottom: 50px;
+  margin-bottom: 80px;
 }
 
 .winnerInfo {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.raffleEndsContainer {
+  width: 60%;
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(69, 123, 157);
+  border: 2px solid black;
+  border-radius: 20px;
+}
+
+.raffleEnds {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 1;
+  height: 500px;
+  width: 100%;
+}
+
+.raffleEndsInformation {
+  color: white;
+  font-size: 40px;
+  margin-bottom: 30px;
+}
+
+.raffleEndsInformation span {
+  font-weight: 600;
+  font-size: 50px;
+  color: rgb(230, 57, 70);
+}
+.raffleEndsBottom {
+  font-size: 30px;
 }

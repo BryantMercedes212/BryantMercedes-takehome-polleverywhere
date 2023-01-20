@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const notify = () => toast.success("Raffle Created!");
+
   return (
     <div className="App">
       <NavBar />
